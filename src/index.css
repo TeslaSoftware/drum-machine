@@ -1,13 +1,116 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 2rem;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+
+
+.app-container{
+  text-align: center;
+  border: 0.2rem solid black;
+  border-radius: 0.5rem;
+  margin: auto;
+  padding: 1rem;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: 5rem 50vmin auto;
+  grid-template-rows: auto auto 50vmin;
+}
+
+#title{
+  grid-column-start: 1;
+  grid-column-end: span 2;
+  grid-row-start: 1;
+  text-align: left;
+  font-family: "Snell Roundhand", cursive;
+}
+
+#volume-slider label, legend{
+  height: 1rem;
+  padding: 0.5rem;
+  margin: auto;
+}
+
+.drum-machine-model{
+  grid-column-start: 2;
+  grid-column-end: span 2;
+  grid-row-start: 1;
+  height: 3rem;
+  font-size: 2rem;
+  text-align: right;
+  align-self: start;
+}
+
+#display{
+  border: 0.1rem solid black;
+  background-color: aqua;
+  padding: 0.2rem;
+  height: 5vmin;
+  line-height: 5vmin;
+  grid-column-start: 2;
+  grid-row-start: 2;
+}
+
+#machine-controls{
+  display: flex;
+  flex-flow: row wrap;
+  padding: 1rem 0;
+}
+
+#volume-slider{
+  border: 1px solid black;
+  grid-column-start: 1;
+  grid-row-start: 3;
+  margin-right: 1rem;
+}
+
+#volume-slider label{
+  display: block;
+}
+
+#volume-slider input{
+  writing-mode: bt-lr; /* IE */
+  -webkit-appearance: slider-vertical; /* WebKit */
+  width: 1rem;
+  height: 90%;
+  display: block;
+  margin: auto;
+}
+
+#drum-pads-constianer{
+  grid-column-start: 2;
+  grid-row-start: 3;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.drum-pad{
+  padding:1rem;
+  margin: 2%;
+  height: 14vmin;
+  width: 14vmin;
+  font-weight: bold;
+  background-color: rgba(255,255,255,0.2);
+  border: 0.1rem solid black;
+  border-radius: 5%;
+}
+
+#drumkit-banks-container{
+  grid-column-start: 3;
+  grid-row-start: 2;
+  grid-row-end: span 2;
+  height: 100%;
+  padding: 0;
+  margin-left: 1rem;
+  box-sizing: border-box;
+}
+
+#drumkit-banks-radio-container{
+  padding: 0.5rem 0;
+}
+
+#drumkit-banks-radio-container input{
+  vertical-align: middle;
 }
