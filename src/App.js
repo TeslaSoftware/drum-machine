@@ -2,6 +2,7 @@ import React from 'react';
 //import logo from './logo.svg';
 import './App.css';
 
+
 /*
 function OriginalApp() {
   return (
@@ -26,11 +27,13 @@ function OriginalApp() {
 */
 
 class App extends React.Component{
+
   state ={
 
   }
 
   render(){
+    
     return(
         <div id="drum-machine" className="app-container">
           <div id="title">Drum Machine</div>
@@ -41,6 +44,7 @@ class App extends React.Component{
           <div id="display">Display Test! </div>
           <DrumPads />
           <DrumkitBanks />
+          
         </div>
     );
   }
@@ -60,7 +64,7 @@ class VolumeSlider extends React.Component{
   render(){
     return(
       <div id="volume-slider">
-        <label htmlFor="volume-input">Vol</label>
+        <label htmlFor="volume-input">VOL</label>
         <input id="volume-input" type="range" value={this.state.volume} onChange={this.handleChange} name="volume" min="1" max="100" step="1"/>
       </div>
     ); 
@@ -69,25 +73,43 @@ class VolumeSlider extends React.Component{
 
 function DrumPads(props){
   var drumPadKeys = ['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C'];
+  var sounds = ['clap', 'claw', 'congo', 'cymbal', 'hihat', 'hihat_open', 'kick', 'rim', 'snare'];
   var drumPadsToGenerate= [];
-  /*
-  for(var i=0; i<3; i++){
-    var drumPadsRow = [];
-    for(var j=0; j<3; j++){
-      var element = drumPadKeys[i*3 + j];
-      drumPadsRow.push(<DrumPad id={element} drumKey={element} key={element} />);
-    }
-    drumPadsToGenerate.push(<div className="drum-pads-row" key={"row #" + i}>{drumPadsRow}</div>)
-  }
-  */
   drumPadKeys.forEach((element,index) => {
-    drumPadsToGenerate.push(<DrumPad id={element} drumKey={element} key={element} />)
+    drumPadsToGenerate.push(
+      <DrumPad drumKey={element} key={element} soundBank="Roland_CR-8000" soundType={sounds[index]} />
+    )
   });
   return <div id="drum-pads-constianer">{drumPadsToGenerate}</div>
 }
 
-function DrumPad(props){
-  return <button className="drum-pad">{props.drumKey}</button>
+class DrumPad extends React.Component{
+  constructor(props){
+    super(props);
+    const DRUMKITS_PATH = './drumkit-banks/';
+    this.state =
+    {
+      soundUrl: require(DRUMKITS_PATH + props.soundBank + "/" + props.soundType + ".mp3"),
+      drumKey: props.drumKey
+    }
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(i){
+    console.log("Inside handle click of key: " + this.state.drumKey);
+    var audio =  document.getElementById("drumpad-audio-key-" + this.state.drumKey);
+    audio.play();
+  }
+
+  render(){
+    return <button className="drum-pad" id={"drumpad-key" + this.state.drumKey} onClick={this.handleClick}>
+      {this.state.drumKey}
+      <audio id={"drumpad-audio-key-"+this.state.drumKey}>
+        <source src={this.state.soundUrl} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </button>
+  }  
 }
 
 class DrumkitBanks extends React.Component{
@@ -102,11 +124,13 @@ class DrumkitBanks extends React.Component{
   }
 }
 
+//TO-DO:CSS radio button is native element and cannot be styled. To bypass that need to create custom element. 
+//Can reuse checkbox and have DrumkitBanks manage the state which one is selected, to make sure only one is selected.
 class DrumkitBank extends React.Component{
   render(){
     return <div>
       <input type="radio" name="drumkit-bank" id="drumkit-bank-1" value="drumkit-bank-1" />
-      <label htmlFor="drumkit-bank-1">drumkit-bank-1</label>
+      <label htmlFor="drumkit-bank-1">Roland CR-8000</label>
     </div>
   }
 }
