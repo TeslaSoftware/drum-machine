@@ -2,14 +2,34 @@ import React from 'react';
 //import logo from './logo.svg';
 import './App.css';
 
-//limit text to 12 chars
-const DRUMKIT_BANKS_DATA = {
-  'Alesis_HR16': ['bell', 'clap', 'congo', 'crash', 'hihat', 'kick', 'pop', 'shake', 'snare'],
-  'Korg_KR-55': ['claw', 'cowbell', 'cymbal', 'hihat', 'hihat_open', 'kick', 'rim', 'snare', 'tom'],
-  'Roland_CR-8000': ['clap', 'claw', 'congo', 'cymbal', 'hihat', 'hihat_open', 'kick', 'rim', 'snare'],
-  'Roland_TR-66': ['hihat', 'hihat_open', 'kick', 'percussion', 'percussion_2', 'percussion_3', 'rim', 'snare', 'snare_2'],
-  'Yamaha_DX100': ['LFO_noise_C2', 'LFO_noise_C3', 'LFO_noise_C4', 'pink_noise', 'shogakko', 'synth_perc', 'timpani_C4', 'tom', 'tom-tom_2' ]
-}
+//limit text of each sound to 12 chars
+const DRUMKIT_BANKS_DATA = [
+  {
+    'nameRaw':'Alesis_HR16',
+    'name':'Alesis HR16',
+    'sounds': ['bell', 'clap', 'congo', 'crash', 'hihat', 'kick', 'pop', 'shake', 'snare'],
+  },
+  {
+    'nameRaw':'Korg_KR-55' ,
+    'name':'Korg KR-55',
+    'sounds': ['claw', 'cowbell', 'cymbal', 'hihat', 'hihat_open', 'kick', 'rim', 'snare', 'tom'],
+  },
+  {
+    'nameRaw': 'Roland_CR-8000',
+    'name': 'Roland CR-8000',
+    'sounds':  ['clap', 'claw', 'congo', 'cymbal', 'hihat', 'hihat_open', 'kick', 'rim', 'snare'],
+  },
+  {
+    'nameRaw':'Roland_TR-66',
+    'name': 'Roland TR-66',
+    'sounds': ['hihat', 'hihat_open', 'kick', 'percussion', 'percussion_2', 'percussion_3', 'rim', 'snare', 'snare_2'],
+  },
+  {
+    'nameRaw': 'Yamaha_DX100',
+    'name': 'Yamaha DX100',
+    'sounds': ['LFO_noise_C2', 'LFO_noise_C3', 'LFO_noise_C4', 'pink_noise', 'shogakko', 'synth_perc', 'timpani_C4', 'tom', 'tom-tom_2' ]
+  }
+]
 
 /*
 function OriginalApp() {
@@ -62,29 +82,40 @@ class App extends React.Component{
   constructor(props){
     super(props);
     this.state ={
-      currentDrumkit: "",
-      currentDrumkitName: "",
+      currentDrumkitBankObj: DRUMKIT_BANKS_DATA[0], //assign first drumkit available
       volume: 70, //default
       displayText: "Welcome!",
       displayIsBeingUpdated: false
     }
-    //assign first drumkit available
-    for (var prop in DRUMKIT_BANKS_DATA) {
-      this.state.currentDrumkitName = prop;
-      this.state.currentDrumkit = DRUMKIT_BANKS_DATA[prop];
-      break;
-    } 
     this.onVolumeChange = this.onVolumeChange.bind(this);
     this.updateDisplay = this.updateDisplay.bind(this);
+    this.onChangeDrumkitBank = this.onChangeDrumkitBank.bind(this);
+    console.debug("Initialized App component." );
   }
 
   onVolumeChange(newVolume){
-    console.log("Changing volume to: " + newVolume);
     this.setState({
       volume: newVolume
     });
     var newMessage = "Volume: " + this.state.volume;
     this.updateDisplay(newMessage, 3000);
+  }
+
+  onChangeDrumkitBank(newDrumkitBankNameRaw){
+    console.debug("Chaning drumkit bank to: " + newDrumkitBankNameRaw);
+    //find obj reference to new drumkit by raw name and update state
+    var newBankObj;
+    for(var idx = 0; idx< DRUMKIT_BANKS_DATA.length; idx++ ){
+      if(DRUMKIT_BANKS_DATA[idx]['nameRaw'] === newDrumkitBankNameRaw){
+        newBankObj= DRUMKIT_BANKS_DATA[idx];
+        this.setState({
+          currentDrumkitBankObj: newBankObj
+        });
+        break;
+      }
+    }   
+
+    this.updateDisplay(newBankObj['name'], 3000);
   }
 
   //updates display with new message and clears it after designated delay in ms
@@ -114,23 +145,23 @@ class App extends React.Component{
           </div>
           <VolumeSlider volume={this.state.volume} onVolumeChange={this.onVolumeChange} />
           <div id="display">{this.state.displayText}</div>
-          <DrumPads />
-          <DrumkitBanks banks={DRUMKIT_BANKS_DATA}/>
+          <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} />
+          <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank}/>
           
         </div>
     );
   }
 }
 
+
+
 class VolumeSlider extends React.Component{
   constructor(props) {
     super(props);
-    //this.state = {volume: 100};
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-    //this.setState({volume: event.target.value});
     this.props.onVolumeChange(event.target.value);
   }
   
@@ -146,6 +177,7 @@ class VolumeSlider extends React.Component{
 
 function DrumPads(props){
   var drumPadKeys = ['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C'];
+  //var sounds = props.currentDrumkitBankObj
   var sounds = ['clap', 'claw', 'congo', 'cymbal', 'hihat', 'hihat_open', 'kick', 'rim', 'snare'];
   var drumPadsToGenerate= [];
   drumPadKeys.forEach((element,index) => {
@@ -169,7 +201,6 @@ class DrumPad extends React.Component{
   }
 
   handleClick(i){
-    console.log("Inside handle click of key: " + this.state.drumKey);
     var audio =  document.getElementById("drumpad-audio-key-" + this.state.drumKey);
     audio.play();
   }
@@ -197,11 +228,9 @@ class DrumkitBanks extends React.Component{
   render(){
     var drumkitBanksToUse =[];
     
-    for(var property in this.state.banks){
-      var name = property.replace('_',' ');
-      drumkitBanksToUse.push( <DrumkitBank bankName={name} key={property} />)
-    }
-    
+    this.props.banks.forEach((bank, index) => {
+      drumkitBanksToUse.push( <DrumkitBank bankName={bank['name']} key={"bank_"+index} bankNameRawValue={bank['nameRaw']} onChangeDrumkitBank={this.props.onChangeDrumkitBank} />)
+    });
     return <fieldset id="drumkit-banks-container">
       <legend>BANKS</legend>
       <div id="drumkit-banks-radio-container">
@@ -211,15 +240,22 @@ class DrumkitBanks extends React.Component{
   }
 }
 
-//TO-DO:CSS radio button is native element and cannot be styled. To bypass that need to create custom element. 
-//Can reuse checkbox and have DrumkitBanks manage the state which one is selected, to make sure only one is selected.
 class DrumkitBank extends React.Component{
+
+  constructor(props){
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange() {
+    this.props.onChangeDrumkitBank(this.props.bankNameRawValue);
+  }
 
   render(){
 
     return <div>
-      <input type="radio" name="drumkit-bank" id="drumkit-bank-1" value="drumkit-bank-1" />
-      <label htmlFor="drumkit-bank-1">{this.props.bankName}</label>
+      <input type="checkbox" name={this.props.bankNameRawValue} id={this.props.bankNameRawValue} value={this.props.bankName} check={this.props.isChecked} onChange={this.handleChange} />
+      <label htmlFor={this.props.bankNameRawValue}>{this.props.bankName}</label>
     </div>
   }
 }
