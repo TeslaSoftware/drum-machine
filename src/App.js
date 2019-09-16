@@ -59,10 +59,11 @@ class App extends React.Component{
     
     this.state ={
       currentDrumkitBankObj: DRUMKIT_BANKS_DATA[0], //assign first drumkit available
+      selectedDrumkitBankIndex: 0,
       volume: 70, //default
       displayText: "Welcome!",
       displayIsBeingUpdated: false,
-      drumkitData : DRUMKIT_BANKS_DATA
+      drumkitData : DRUMKIT_BANKS_DATA,
     }
     this.onVolumeChange = this.onVolumeChange.bind(this);
     this.updateDisplay = this.updateDisplay.bind(this);
@@ -119,7 +120,8 @@ class App extends React.Component{
       if(DRUMKIT_BANKS_DATA[idx]['nameRaw'] === newDrumkitBankNameRaw){
         newBankObj= DRUMKIT_BANKS_DATA[idx];
         this.setState({
-          currentDrumkitBankObj: newBankObj
+          currentDrumkitBankObj: newBankObj,
+          selectedDrumkitBankIndex: idx
         });
         break;
       }
@@ -155,8 +157,8 @@ class App extends React.Component{
           </div>
           <VolumeSlider volume={this.state.volume} onVolumeChange={this.onVolumeChange} />
           <div id="display">{this.state.displayText}</div>
-          <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} />
-          <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank}/>
+          <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} updateDisplay={this.updateDisplay} />
+          <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank} selectedDrumkitBankIndex={this.state.selectedDrumkitBankIndex} />
         </div>
     );
   }
@@ -193,10 +195,11 @@ class DrumPads extends React.Component{
     console.debug("Generating drum pads");
     drumPadKeys.forEach((element,index) => {
       drumPadsToGenerate.push(
-        <DrumPad drumKey={element} key={element} 
-          soundBank={this.props.selectedDrumkitBank['nameRaw']} 
-          soundType={sounds[index]} 
-          soundUrlStatic={this.props.selectedDrumkitBank['soundUrls'][index]} 
+        <DrumPad drumKey = {element} key={element} 
+          soundBank = {this.props.selectedDrumkitBank['nameRaw']} 
+          soundType = {sounds[index]} 
+          soundUrlStatic = {this.props.selectedDrumkitBank['soundUrls'][index]}
+          updateDisplay = {this.props.updateDisplay}
         />
       );
     });
@@ -207,23 +210,32 @@ class DrumPads extends React.Component{
 class DrumPad extends React.Component{
   constructor(props){
     super(props);
-    console.debug("DrumPad.constructor() Started");
     this.state =
     {
-      soundUrlMod: this.props.soundUrlStatic,
+      soundUrlMod: props.soundUrlStatic,
       drumKey: props.drumKey,
-      currentSoundBank: props.soundBank
+      currentSoundBank: props.soundBank,
     }
     this.handleClick = this.handleClick.bind(this);
-    console.debug("DrumPad.constructor() Finished")
   }
 
-  handleClick(i){
-    var audio =  document.getElementById("drumpad-audio-key-" + this.state.drumKey);
-    audio.play();
+  componentDidMount(){
+    this.setState({
+      audioHTMLTag: document.getElementById("drumpad-audio-key-" + this.props.drumKey)
+    });
+  }
+
+  /*
+  Update component only when bank is changed.
+  This helps to pass the message to display with sound name, 
+  otherwise it will re-render the element and there will be not enough time to play sound
+  */
+  shouldComponentUpdate(nextProps, nextState){
+    return this.props.soundBank !== nextProps.soundBank;
   }
 
   componentDidUpdate(prevProps, prevState){
+    //update soundbanks only if they were changed
     if(this.props.soundBank !== prevProps.soundBank){
       this.setState({
         soundUrlMod: this.props.soundUrlStatic,
@@ -233,6 +245,12 @@ class DrumPad extends React.Component{
     //reload the audio source
     var audio =  document.getElementById("drumpad-audio-key-" + this.state.drumKey);
     audio.load();
+  }
+
+  handleClick(i){
+    var soundNameUpper = this.props.soundType.replace("_"," ").toUpperCase();
+    this.state.audioHTMLTag.play();
+    this.props.updateDisplay(soundNameUpper,1000);
   }
 
 
@@ -261,7 +279,15 @@ class DrumkitBanks extends React.Component{
   render(){
     var drumkitBanksToUse =[];
     this.props.banks.forEach((bank, index) => {
-      drumkitBanksToUse.push( <DrumkitBank bankName={bank['name']} key={"bank_"+index} bankNameRawValue={bank['nameRaw']} onChangeDrumkitBank={this.props.onChangeDrumkitBank} />)
+      drumkitBanksToUse.push( 
+        <DrumkitBank bankName = {bank['name']} 
+          key = {"bank_"+index} 
+          bankNameRawValue = {bank['nameRaw']} 
+          bankIndex = {index}
+          selectedDrumkitBankIndex = {this.props.selectedDrumkitBankIndex}
+          onChangeDrumkitBank = {this.props.onChangeDrumkitBank} 
+        />
+        )
     });
     return <fieldset id="drumkit-banks-container">
       <legend>BANKS</legend>
@@ -279,14 +305,32 @@ class DrumkitBank extends React.Component{
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange() {
+  handleChange(event) {
     this.props.onChangeDrumkitBank(this.props.bankNameRawValue);
+    //remove checkboxes from all the drumkit bank buttons/checkboxes
+    var drumkitBankButtons = document.querySelectorAll(".drumkit-bank-radio input");
+    
+    for(var i=0; i < drumkitBankButtons.length; i++){
+      if(drumkitBankButtons[i].id === event.target.id){
+        drumkitBankButtons[i].checked = true;
+      }
+      else{
+        drumkitBankButtons[i].checked = false;
+      }    
+    }
   }
 
   render(){
 
-    return <div>
-      <input type="checkbox" name={this.props.bankNameRawValue} id={this.props.bankNameRawValue} value={this.props.bankName} check={this.props.isChecked} onChange={this.handleChange} />
+    return <div className="drumkit-bank-radio">
+      <input 
+        type="checkbox" 
+        name={this.props.bankNameRawValue} 
+        id={this.props.bankNameRawValue} 
+        value={this.props.bankName} 
+        checked={this.props.selectedDrumkitBankIndex === this.props.bankIndex ? true : false} 
+        onChange={this.handleChange} 
+      />
       <label htmlFor={this.props.bankNameRawValue}>{this.props.bankName}</label>
     </div>
   }
