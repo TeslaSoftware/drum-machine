@@ -59,7 +59,7 @@ class App extends React.Component{
     
     this.state ={
       currentDrumkitBankObj: DRUMKIT_BANKS_DATA[0], //assign first drumkit available
-      selectedDrumkitBankIndex: 0,
+      selectedDrumkitBankIndex: 0, //default bank index -> first bank available
       volume: 70, //default
       displayText: "Welcome!",
       displayIsBeingUpdated: false,
@@ -157,7 +157,7 @@ class App extends React.Component{
           </div>
           <VolumeSlider volume={this.state.volume} onVolumeChange={this.onVolumeChange} />
           <div id="display">{this.state.displayText}</div>
-          <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} updateDisplay={this.updateDisplay} />
+          <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} updateDisplay={this.updateDisplay} volume={this.state.volume} />
           <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank} selectedDrumkitBankIndex={this.state.selectedDrumkitBankIndex} />
         </div>
     );
@@ -192,7 +192,6 @@ class DrumPads extends React.Component{
     var drumPadKeys = ['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C'];
     var sounds = this.props.selectedDrumkitBank['sounds'];
     var drumPadsToGenerate= [];
-    console.debug("Generating drum pads");
     drumPadKeys.forEach((element,index) => {
       drumPadsToGenerate.push(
         <DrumPad drumKey = {element} key={element} 
@@ -200,6 +199,7 @@ class DrumPads extends React.Component{
           soundType = {sounds[index]} 
           soundUrlStatic = {this.props.selectedDrumkitBank['soundUrls'][index]}
           updateDisplay = {this.props.updateDisplay}
+          volume = {this.props.volume}
         />
       );
     });
@@ -249,7 +249,9 @@ class DrumPad extends React.Component{
 
   handleClick(i){
     var soundNameUpper = this.props.soundType.replace("_"," ").toUpperCase();
-    this.state.audioHTMLTag.play();
+    var audio = this.state.audioHTMLTag;
+    audio.volume= this.props.volume /100;
+    audio.play();
     this.props.updateDisplay(soundNameUpper,1000);
   }
 
@@ -322,17 +324,23 @@ class DrumkitBank extends React.Component{
 
   render(){
 
-    return <div className="drumkit-bank-radio">
-      <input 
-        type="checkbox" 
-        name={this.props.bankNameRawValue} 
-        id={this.props.bankNameRawValue} 
-        value={this.props.bankName} 
-        checked={this.props.selectedDrumkitBankIndex === this.props.bankIndex ? true : false} 
-        onChange={this.handleChange} 
-      />
-      <label htmlFor={this.props.bankNameRawValue}>{this.props.bankName}</label>
-    </div>
+    return <div >
+      <label className="drumkit-bank-radio" htmlFor={this.props.bankNameRawValue}>
+        {this.props.selectedDrumkitBankIndex === this.props.bankIndex ? <span className="drumkit-bank-led-checked" > </span> : <span className="drumkit-bank-led" ></span> } 
+        <span class="drumkit-bank-name">{this.props.bankName}</span>
+        <input 
+          type="checkbox" 
+          className="checkbox"
+          name={this.props.bankNameRawValue} 
+          id={this.props.bankNameRawValue} 
+          value={this.props.bankName} 
+          checked={this.props.selectedDrumkitBankIndex === this.props.bankIndex ? true : false} 
+          onChange={this.handleChange} 
+        />
+      </label>
+      </div>
+      
+    
   }
 }
 
