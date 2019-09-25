@@ -150,15 +150,20 @@ class App extends React.Component{
 
   render(){    
     return(
-        <div id="drum-machine" className="app-container" >
-          <div id="title">Ultimate Drum Machine</div>
-          <div className="drum-machine-model">
-            DRM-KT 19
+        <div>
+        <div className="space stars1"></div>
+        <div className="space stars2"></div>
+        <div className="space stars3"></div>
+          <div id="drum-machine" className="app-container" >
+            <div id="title">Ultimate Drum Machine</div>
+            <div className="drum-machine-model">
+              DRM-KT 19
+            </div>
+            <VolumeSlider volume={this.state.volume} onVolumeChange={this.onVolumeChange} />
+            <div id="display">{this.state.displayText}</div>
+            <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} updateDisplay={this.updateDisplay} volume={this.state.volume} />
+            <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank} selectedDrumkitBankIndex={this.state.selectedDrumkitBankIndex} />
           </div>
-          <VolumeSlider volume={this.state.volume} onVolumeChange={this.onVolumeChange} />
-          <div id="display">{this.state.displayText}</div>
-          <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} updateDisplay={this.updateDisplay} volume={this.state.volume} />
-          <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank} selectedDrumkitBankIndex={this.state.selectedDrumkitBankIndex} />
         </div>
     );
   }
@@ -180,7 +185,7 @@ class VolumeSlider extends React.Component{
     return(
       <div id="volume-slider">
         <label htmlFor="volume-input">VOL</label>
-        <input id="volume-input" type="range" value={this.props.volume} onChange={this.handleChange} name="volume" min="1" max="100" step="1"/>
+        <input id="volume-input" className="slider" type="range" value={this.props.volume} onChange={this.handleChange} name="volume" min="1" max="100" step="1"/>
       </div>
     ); 
   }
