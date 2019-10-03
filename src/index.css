@@ -14,50 +14,48 @@ body {
   padding: 1rem;
   max-width: 800px;
   display: grid;
-  grid-template-columns: 5rem 50vmin auto;
-  grid-template-rows: auto auto 50vmin;
+  grid-template-columns: auto 60vmin;
+  grid-template-rows: auto auto 50vmin 10vmin;
   background-color: #373738;
   user-select:none;
   box-shadow: 0.2rem 0.2rem 0.2rem rgba(0,0,0,0.5);
 }
 
 #title{
-  grid-column-start: 1;
-  grid-column-end: span 2;
+  grid-column-start: 2;
   grid-row-start: 1;
-  text-align: left;
+  text-align: right;
   font-family: 'Electrolize', sans-serif;
 }
 
-#volume-slider label, legend{
-  height: 1rem;
-  padding: 0.5rem;
-  margin: auto;
-}
 
 .drum-machine-model{
-  grid-column-start: 2;
-  grid-column-end: span 2;
+  grid-column-start: 1;
   grid-row-start: 1;
   height: 3rem;
   font-size: 2rem;
-  text-align: right;
+  text-align: left;
   align-self: start;
   font-family: 'Orbitron', sans-serif;
 }
 
 #display{
+  grid-column-start: 2;
+  grid-row-start: 2;
+  display: block;
+  width: 92%;
+  height: 7vmin;
+  line-height: 7vmin;
+  min-height: 1.5rem;
+  justify-self: center;
+  margin-bottom: 2%;
+  padding: 0.2rem;
   border: 0.1rem solid black;
   background: rgb(34,105,201);
   background: radial-gradient(ellipse,rgba(80,148,255,0.78)   0%, rgba(34,105,201,1) 100%);
-  padding: 0.2rem;
-  height: 5vmin;
-  line-height: 5vmin;
-  grid-column-start: 2;
-  grid-row-start: 2;
   color: rgba(0,0,0,0.7);
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 4vmin;
   font-family: 'Orbitron', sans-serif;
   box-shadow: inset 0.1rem 0.1em 1.2rem rgba(0,0,0,0.5), inset 0.1rem 0.1em 0.1rem rgba(0,0,0,0.5);
   transition: 1s;
@@ -69,9 +67,11 @@ body {
   padding: 1rem 0;
 }
 
+
+
 #volume-slider{
   grid-column-start: 1;
-  grid-row-start: 3;
+  grid-row-start: 4;
   margin-right: 1rem;
 }
 
@@ -81,7 +81,6 @@ body {
 
 #volume-slider input{
   display: block;
-  transform: rotate(-90deg); /*transform to display vertically*/
   background-color: transparent;
 
 }
@@ -98,8 +97,8 @@ body {
 .drum-pad{
   padding:1rem;
   margin: 2%;
-  height: 14vmin;
-  width: 14vmin;
+  height: 17vmin;
+  width: 17vmin;
   font-weight: bold;
   background-color: rgba(255,255,255,0.2);
   border: 0.1rem solid black;
@@ -122,14 +121,18 @@ body {
 }
 
 #drumkit-banks-container{
-  grid-column-start: 3;
+  grid-column-start: 1;
   grid-row-start: 2;
   grid-row-end: span 2;
   height: 100%;
   padding: 0;
-  margin-left: 1rem;
-  box-sizing: border-box;
+  margin-right: 1rem;
+  padding-top: 3vmin;
 }
+#drumkit-banks-container fieldset{
+  padding: 0.5rem;
+}
+
 
 #drumkit-banks-radio-container{
   padding: 0.5rem 0;
@@ -329,7 +332,7 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 10px;
   cursor: pointer;
-  animate: 0.2s;
+  transition: 0.2s;
   box-shadow: 1px 1px 1px #000000;
   background: #3071A9;
   border-radius: 5px;
@@ -353,7 +356,7 @@ input[type=range]::-moz-range-track {
   width: 100%;
   height: 10px;
   cursor: pointer;
-  animate: 0.2s;
+  transition: 0.2s;
   box-shadow: 1px 1px 1px #000000;
   background: #3071A9;
   border-radius: 5px;
@@ -372,7 +375,7 @@ input[type=range]::-ms-track {
   width: 100%;
   height: 10px;
   cursor: pointer;
-  animate: 0.2s;
+  transition: 0.2s;
   background: transparent;
   border-color: transparent;
   color: transparent;

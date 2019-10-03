@@ -155,14 +155,14 @@ class App extends React.Component{
         <div className="space stars2"></div>
         <div className="space stars3"></div>
           <div id="drum-machine" className="app-container" >
-            <div id="title">Ultimate Drum Machine</div>
             <div className="drum-machine-model">
               DRM-KT 19
             </div>
-            <VolumeSlider volume={this.state.volume} onVolumeChange={this.onVolumeChange} />
+            <div id="title">Ultimate Drum Machine</div>
+            <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank} selectedDrumkitBankIndex={this.state.selectedDrumkitBankIndex} />
             <div id="display">{this.state.displayText}</div>
             <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} updateDisplay={this.updateDisplay} volume={this.state.volume} />
-            <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank} selectedDrumkitBankIndex={this.state.selectedDrumkitBankIndex} />
+            <VolumeSlider volume={this.state.volume} onVolumeChange={this.onVolumeChange} />
           </div>
         </div>
     );
@@ -184,7 +184,7 @@ class VolumeSlider extends React.Component{
   render(){
     return(
       <div id="volume-slider">
-        <label htmlFor="volume-input">VOL</label>
+        <label htmlFor="volume-input">VOLUME</label>
         <input id="volume-input" className="slider" type="range" value={this.props.volume} onChange={this.handleChange} name="volume" min="1" max="100" step="1"/>
       </div>
     ); 
@@ -296,12 +296,14 @@ class DrumkitBanks extends React.Component{
         />
         )
     });
-    return <fieldset id="drumkit-banks-container">
-      <legend>BANKS</legend>
-      <div id="drumkit-banks-radio-container">
-        {drumkitBanksToUse}
-      </div>
-    </fieldset>
+    return <div id="drumkit-banks-container">
+      <fieldset >
+        <legend>BANKS</legend>
+        <div id="drumkit-banks-radio-container">
+          {drumkitBanksToUse}
+        </div>
+      </fieldset>
+    </div>
   }
 }
 
@@ -332,7 +334,7 @@ class DrumkitBank extends React.Component{
     return <div >
       <label className="drumkit-bank-radio" htmlFor={this.props.bankNameRawValue}>
         {this.props.selectedDrumkitBankIndex === this.props.bankIndex ? <span className="drumkit-bank-led-checked" > </span> : <span className="drumkit-bank-led" ></span> } 
-        <span class="drumkit-bank-name">{this.props.bankName}</span>
+        <span className="drumkit-bank-name">{this.props.bankName}</span>
         <input 
           type="checkbox" 
           className="checkbox"
