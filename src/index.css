@@ -31,6 +31,7 @@ body {
 
 .drum-machine-model{
   grid-column-start: 1;
+  grid-column-end: span 2;
   grid-row-start: 1;
   height: 3rem;
   font-size: 2rem;
@@ -48,7 +49,6 @@ body {
   line-height: 7vmin;
   min-height: 1.5rem;
   justify-self: center;
-  margin-bottom: 2%;
   padding: 0.2rem;
   border: 0.1rem solid black;
   background: rgb(34,105,201);
@@ -86,19 +86,19 @@ body {
 }
 
 #drum-pads-constianer{
-  grid-column-start: 2;
+  grid-column-start: 2;  
   grid-row-start: 3;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: center;
+  grid-row-end: span 2;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto;
+  grid-column-gap: 4%;
+  grid-row-gap: 4%;
+  padding: 4%;
 }
 
 .drum-pad{
   padding:1rem;
-  margin: 2%;
-  height: 17vmin;
-  width: 17vmin;
   font-weight: bold;
   background-color: rgba(255,255,255,0.2);
   border: 0.1rem solid black;
@@ -110,7 +110,7 @@ body {
   transition: 0.05s;
 }
 
-.drum-pad:active{
+.drum-pad:active, .drum-pad-active{
   transform: translate(0.1rem, 0.1rem);  
   background-color: rgba(255,255,255,0.8);
   box-shadow: 0rem 0rem rgba(0,0,0,0.5), inset 0 0 1px 1px rgba(0,0,0,0.5), inset 0 0 38px 28px #ffc20054, inset 0 0 35px 19px rgba(0,0,0,0.5), inset 0 0 14px 1px rgba(0,0,0,0.5);
@@ -127,7 +127,7 @@ body {
   height: 100%;
   padding: 0;
   margin-right: 1rem;
-  padding-top: 3vmin;
+  padding-top: 4%;
 }
 #drumkit-banks-container fieldset{
   padding: 0.5rem;

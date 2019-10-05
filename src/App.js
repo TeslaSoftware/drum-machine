@@ -160,7 +160,7 @@ class App extends React.Component{
             </div>
             <div id="title">Ultimate Drum Machine</div>
             <DrumkitBanks banks={DRUMKIT_BANKS_DATA} onChangeDrumkitBank={this.onChangeDrumkitBank} selectedDrumkitBankIndex={this.state.selectedDrumkitBankIndex} />
-            <div id="display">{this.state.displayText}</div>
+            <Display textToDisplay={this.state.displayText} />
             <DrumPads selectedDrumkitBank={this.state.currentDrumkitBankObj} updateDisplay={this.updateDisplay} volume={this.state.volume} />
             <VolumeSlider volume={this.state.volume} onVolumeChange={this.onVolumeChange} />
           </div>
@@ -169,6 +169,10 @@ class App extends React.Component{
   }
 }
 
+
+function Display(props) {
+  return <div id="display">{props.textToDisplay}</div>
+}
 
 
 class VolumeSlider extends React.Component{
@@ -212,6 +216,7 @@ class DrumPads extends React.Component{
   }
 }
 
+
 class DrumPad extends React.Component{
   constructor(props){
     super(props);
@@ -220,25 +225,31 @@ class DrumPad extends React.Component{
       soundUrlMod: props.soundUrlStatic,
       drumKey: props.drumKey,
       currentSoundBank: props.soundBank,
+      active: false,
     }
     this.handleClick = this.handleClick.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
+  /*LIFECYCLE METHODS*/
+  //MOUNTING
   componentDidMount(){
     this.setState({
       audioHTMLTag: document.getElementById("drumpad-audio-key-" + this.props.drumKey)
     });
+    window.addEventListener("keydown", this.handleKeyDown);  
+    window.addEventListener("keyup", this.handleKeyUp); 
   }
 
-  /*
-  Update component only when bank is changed.
-  This helps to pass the message to display with sound name, 
-  otherwise it will re-render the element and there will be not enough time to play sound
-  */
-  shouldComponentUpdate(nextProps, nextState){
-    return this.props.soundBank !== nextProps.soundBank;
+  //UNMOUNTING
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+    window.removeEventListener("keyup", this.handleKeyUp);
   }
 
+  //UPDATES  
+  
   componentDidUpdate(prevProps, prevState){
     //update soundbanks only if they were changed
     if(this.props.soundBank !== prevProps.soundBank){
@@ -246,24 +257,44 @@ class DrumPad extends React.Component{
         soundUrlMod: this.props.soundUrlStatic,
         currentSoundBank: this.props.soundBank
       });
-    }
-    //reload the audio source
-    var audio =  document.getElementById("drumpad-audio-key-" + this.state.drumKey);
-    audio.load();
+      //reload the audio source
+      var audio =  document.getElementById("drumpad-audio-key-" + this.state.drumKey);
+      audio.load();
+    }    
   }
 
-  handleClick(i){
+  //HANDLING METHODS
+  handleClick(){
     var soundNameUpper = this.props.soundType.replace("_"," ").toUpperCase();
     var audio = this.state.audioHTMLTag;
     audio.volume= this.props.volume /100;
+    /*there is no stop() function to stop audio so we have to pause it and rewind it to time beginning. Otherwise it will not play again if it is already playing */
+    audio.pause();
+    audio.currentTime = 0;
     audio.play();
     this.props.updateDisplay(soundNameUpper,1000);
+  }
+
+  handleKeyDown(event){
+    if(this.state.drumKey.toUpperCase() === event.key.toUpperCase()){
+      this.handleClick();      
+      this.setState({
+        active: true
+      });
+    }
+  }
+  handleKeyUp(event){
+    if(this.state.drumKey.toUpperCase() === event.key.toUpperCase()){
+      this.setState({
+        active: false
+      });
+    }
   }
 
 
   render(){     
     return (
-    <button className="drum-pad" id={"drumpad-key" + this.state.drumKey} onClick={this.handleClick}>
+    <button className={this.state.active ? "drum-pad drum-pad-active": "drum-pad"} id={"drumpad-key" + this.state.drumKey} onMouseDown={this.handleClick}>
       {this.state.drumKey}
       <audio id={"drumpad-audio-key-"+this.state.drumKey}>
         <source src={this.props.soundUrlStatic} type="audio/mpeg"/>
@@ -273,6 +304,7 @@ class DrumPad extends React.Component{
     )
   }  
 }
+
 
 class DrumkitBanks extends React.Component{
 
@@ -306,6 +338,7 @@ class DrumkitBanks extends React.Component{
     </div>
   }
 }
+
 
 class DrumkitBank extends React.Component{
 
