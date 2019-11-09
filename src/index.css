@@ -320,7 +320,7 @@ body{
 /* Styling sider */
 /* TODO Style the slider*/
 input[type=range] {
-  height: 38px;
+  height: 2em;
   -webkit-appearance: none;
   margin: 10px 0;
   width: 100%;
@@ -330,50 +330,47 @@ input[type=range]:focus {
 }
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
-  height: 10px;
+  height: 0.5em;
   cursor: pointer;
   transition: 0.2s;
-  box-shadow: 1px 1px 1px #000000;
-  background: #3071A9;
-  border-radius: 5px;
+  box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.1);
   border: 1px solid #000000;
 }
 input[type=range]::-webkit-slider-thumb {
-  box-shadow: 1px 1px 1px #000000;
+  box-shadow: inset 0px 0px 1px 2px rgba(0,0,0,0.3);
   border: 1px solid #000000;
-  height: 30px;
-  width: 15px;
-  border-radius: 5px;
-  background: #FFFFFF;
+  height: 2.5em;
+  width: 0.75em;
+  margin-top: -1em;
+  background: #5f5f60;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -11px;
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #3071A9;
+  background: rgba(0,0,0,0.2);
 }
 input[type=range]::-moz-range-track {
   width: 100%;
-  height: 10px;
+  height: 0.5em;
   cursor: pointer;
   transition: 0.2s;
-  box-shadow: 1px 1px 1px #000000;
-  background: #3071A9;
-  border-radius: 5px;
+  box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.1);
   border: 1px solid #000000;
 }
 input[type=range]::-moz-range-thumb {
-  box-shadow: 1px 1px 1px #000000;
+  box-shadow: inset 0px 0px 1px 2px rgba(0,0,0,0.3);
   border: 1px solid #000000;
-  height: 30px;
-  width: 15px;
-  border-radius: 5px;
-  background: #FFFFFF;
+  height: 2.5em;
+  width: 0.75em;
+  margin-top: -1em;
+  background: #5f5f60;
   cursor: pointer;
 }
 input[type=range]::-ms-track {
   width: 100%;
-  height: 10px;
+  height: 0.5em;
   cursor: pointer;
   transition: 0.2s;
   background: transparent;
@@ -381,30 +378,148 @@ input[type=range]::-ms-track {
   color: transparent;
 }
 input[type=range]::-ms-fill-lower {
-  background: #3071A9;
+  background: rgba(0,0,0,0.1);
   border: 1px solid #000000;
-  border-radius: 10px;
-  box-shadow: 1px 1px 1px #000000;
+  box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.4);
 }
 input[type=range]::-ms-fill-upper {
-  background: #3071A9;
+  background: rgba(0,0,0,0.1);
   border: 1px solid #000000;
-  border-radius: 10px;
-  box-shadow: 1px 1px 1px #000000;
+  box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.4);
 }
 input[type=range]::-ms-thumb {
-  margin-top: 1px;
-  box-shadow: 1px 1px 1px #000000;
+  box-shadow: inset 0px 0px 1px 2px rgba(0,0,0,0.3);
   border: 1px solid #000000;
-  height: 30px;
-  width: 15px;
-  border-radius: 5px;
-  background: #FFFFFF;
+  height: 2.5em;
+  width: 0.75em;
+  margin-top: -1em;
+  background: #5f5f60;
   cursor: pointer;
 }
 input[type=range]:focus::-ms-fill-lower {
-  background: #3071A9;
+  background: rgba(0,0,0,0.2);
 }
 input[type=range]:focus::-ms-fill-upper {
-  background: #3071A9;
+  background: rgba(0,0,0,0.2);
+}
+
+/**screen size less than 1000px width**/
+@media (max-width: 1000px) {
+
+  .app-container{
+    grid-template-rows: auto 3rem 50vmin auto;
+    grid-template-columns: 67% auto;
+  }
+
+  .drum-machine-model{
+    height: 2rem;
+    font-size: 1.5rem;
+    padding-bottom:0.5rem;
+  }
+
+  #title{
+    font-size: 0.75rem;
+  }
+
+  #display{
+    grid-column-start:1;
+    width: 90%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    font-size: 1.5rem;
+    min-height: 1rem;
+    margin-left: 1rem;
+    justify-self: left;
+  }
+
+  #volume-slider{
+    grid-column-start:2;
+    grid-row-start: 2;
+    font-size: 0.75rem;
+    margin: 0 1rem;
+  }
+
+  #volume-slider input{
+    font-size: 0.75rem;
+  }
+
+  input[type=range] {
+    height: 1em;
+  }
+
+  #drum-pads-constianer{
+    grid-column-start:1;
+    grid-column-end: span 2;
+    grid-row-start: 3;
+    grid-row-end: span 1;
+    padding: 2%;
+  }
+
+  #drumkit-banks-container{
+    grid-column-start: 1;
+    grid-column-end: span 2;
+    grid-row-start: 4;
+    grid-row-end: 4;
+    margin: 0 1rem;
+    padding-top: 1rem;
+  }
+
+  .drumkit-bank-radio{
+    font-size: 0.75rem;
+    min-width: 10em;
+    margin: 0.25rem;
+  }
+
+  #drumkit-banks-radio-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/**screen size less than 550px width**/
+@media (max-width: 550px) {
+  .app-container{
+    grid-template-rows: 3rem 2rem 50vmin auto;
+  }
+
+  .drum-machine-model{
+    height: 1.5rem;
+    font-size: 1rem;
+  }
+
+  .drumkit-bank-radio{
+    padding: 0.5rem;
+  }
+
+  #drumkit-banks-container{
+    padding-top:0.5rem;
+    font-size: 0.8rem;
+  }
+
+  #title{
+    display: none;
+  }
+
+  #display{
+    margin: 0;
+    justify-self: center;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 1rem;
+    grid-column-end: span 2;
+    width: 90%;
+  }
+
+  #volume-slider{
+    font-size: 0.7rem;
+    grid-row-start:1;
+  }
+
+  #volume-slider input{
+    font-size: 0.5rem;
+  }
 }

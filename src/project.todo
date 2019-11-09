@@ -1,7 +1,7 @@
 TODOs:
     ✔ Add ability to plays sounds based on the keyboard key pressed @critical @est(3 hours) @started(19-10-04 22:54) @done(19-10-04 23:46) @lasted(52m13s)
     ✔ Display which button is clicked, when activated from keyboard keypress @critical @est(1 hour 30 min) @done(19-10-05 14:18)
-    ☐ Style the input range (volume slider) to match it with the rest of drum machine @high @est(1 hour)
+    ✔ Style the input range (volume slider) to match it with the rest of drum machine @high @est(1 hour) @done(19-11-08 23:25)
     ☐ Create depth perception of the drum machine @low @est(1 hour 30 min)
     ☐ Make layout responsive so it scales well to smaller screens. Use layout shifter pattern to move Banks on the bottom @high @est(4 hours)
     ☐ Setup project for production deployment @critical @est(1 hour)

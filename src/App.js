@@ -188,7 +188,7 @@ class VolumeSlider extends React.Component{
   render(){
     return(
       <div id="volume-slider">
-        <label htmlFor="volume-input">VOLUME</label>
+        <label htmlFor="volume-input">-&nbsp;&nbsp; VOLUME &nbsp;&nbsp;+</label>
         <input id="volume-input" className="slider" type="range" value={this.props.volume} onChange={this.handleChange} name="volume" min="1" max="100" step="1"/>
       </div>
     ); 
