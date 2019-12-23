@@ -3,7 +3,7 @@ TODOs:
     ✔ Display which button is clicked, when activated from keyboard keypress @critical @est(1 hour 30 min) @done(19-10-05 14:18)
     ✔ Style the input range (volume slider) to match it with the rest of drum machine @high @est(1 hour) @done(19-11-08 23:25)
     ☐ Create depth perception of the drum machine @low @est(1 hour 30 min)
-    ☐ Make layout responsive so it scales well to smaller screens. Use layout shifter pattern to move Banks on the bottom @high @est(4 hours)
+    ✔ Make layout responsive so it scales well to smaller screens. Use layout shifter pattern to move Banks on the bottom @high @est(4 hours) @done(19-12-22 19:21)
     ☐ Setup project for production deployment @critical @est(1 hour)
 
 

@@ -295,7 +295,7 @@ class DrumPad extends React.Component{
   render(){     
     return (
     <button className={this.state.active ? "drum-pad drum-pad-active": "drum-pad"} id={"drumpad-key" + this.state.drumKey} onMouseDown={this.handleClick}>
-      {this.state.drumKey}
+      <span className="keypad-letter">{this.state.drumKey}</span>
       <audio id={"drumpad-audio-key-"+this.state.drumKey}>
         <source src={this.props.soundUrlStatic} type="audio/mpeg"/>
         Your browser does not support the audio element.

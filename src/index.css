@@ -483,7 +483,12 @@ input[type=range]:focus::-ms-fill-upper {
 /**screen size less than 550px width**/
 @media (max-width: 550px) {
   .app-container{
-    grid-template-rows: 3rem 2rem 50vmin auto;
+    grid-template-rows: 3rem auto auto auto;
+    grid-template-columns: 50% 50%;
+  }
+
+  .keypad-letter{
+    visibility: hidden;
   }
 
   .drum-machine-model{
@@ -496,7 +501,7 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   #drumkit-banks-container{
-    padding-top:0.5rem;
+    padding-top: 2rem;
     font-size: 0.8rem;
   }
 
@@ -511,12 +516,14 @@ input[type=range]:focus::-ms-fill-upper {
     line-height: 1.5rem;
     font-size: 1rem;
     grid-column-end: span 2;
-    width: 90%;
+    width: 92%;
+    margin-bottom: 0.1rem;
   }
 
   #volume-slider{
     font-size: 0.7rem;
     grid-row-start:1;
+
   }
 
   #volume-slider input{
