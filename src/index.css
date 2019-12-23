@@ -8,7 +8,7 @@ body {
 
 .app-container{
   text-align: center;
-  border: 0.2rem solid black;
+  border: 0.6rem inset rgba(125, 119, 128, 0.31);
   border-radius: 0.5rem;
   margin: auto;
   padding: 1rem;
@@ -18,7 +18,8 @@ body {
   grid-template-rows: auto auto 50vmin 10vmin;
   background-color: #373738;
   user-select:none;
-  box-shadow: 0.2rem 0.2rem 0.2rem rgba(0,0,0,0.5);
+  box-shadow: 0 0 2rem 5px rgba(255, 255, 255, 0.2);
+  transform: perspective(50rem) rotateX(5deg);
 }
 
 #title{
@@ -503,6 +504,7 @@ input[type=range]:focus::-ms-fill-upper {
   #drumkit-banks-container{
     padding-top: 2rem;
     font-size: 0.8rem;
+    margin: 0;
   }
 
   #title{
@@ -521,7 +523,7 @@ input[type=range]:focus::-ms-fill-upper {
   }
 
   #volume-slider{
-    font-size: 0.7rem;
+    font-size: 0.5rem;
     grid-row-start:1;
 
   }
