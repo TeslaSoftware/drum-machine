@@ -14,7 +14,7 @@ body {
   padding: 1rem;
   max-width: 800px;
   display: grid;
-  grid-template-columns: auto 60vmin;
+  grid-template-columns: auto 59vmin;
   grid-template-rows: auto auto 50vmin 10vmin;
   background-color: #373738;
   user-select:none;
