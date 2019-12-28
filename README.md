@@ -1,5 +1,6 @@
 # Drum Machine
 Single page app build in React JS which simulates drumkit machine that is traveling through galaxy far far away...
+Live version available here: https://teslasoftware.github.io/drum-machine/
 
 ## Drumkits and Sounds
 Select between 5 different drumkits with each one of them having 9 unique sounds. Drumkits are based on classic drumkit machines used by musicians all over the world. 
